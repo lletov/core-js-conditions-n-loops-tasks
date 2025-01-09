@@ -125,8 +125,56 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  const words = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  let result = '';
+  let isNegative = false;
+  let isDecimal = false;
+  let numStr = numberStr; // Use a new variable to avoid modifying the function parameter
+
+  // Check for a negative number
+  if (numStr[0] === '-') {
+    isNegative = true;
+    numStr = numStr.slice(1); // Remove the minus sign for processing
+  }
+
+  // Process the number
+  for (let i = 0; i < numStr.length; i += 1) {
+    const char = numStr[i];
+
+    if (char === '.' || char === ',') {
+      if (!isDecimal) {
+        result += ' point ';
+        isDecimal = true;
+      }
+    } else {
+      const digit = char - '0'; // Convert the character to a number (e.g., '1' becomes 1)
+      if (digit >= 0 && digit <= 9) {
+        result += `${words[digit]} `;
+      }
+    }
+  }
+
+  // Remove the trailing space at the end
+  result = result.trim();
+
+  // Add "minus" at the beginning if the number is negative
+  if (isNegative) {
+    result = `minus ${result}`;
+  }
+
+  return result;
 }
 
 /**
@@ -178,8 +226,17 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let number = num;
+
+  while (number > 0) {
+    const currentDigit = number % 10;
+    if (currentDigit === digit) {
+      return true;
+    }
+    number = Math.floor(number / 10);
+  }
+  return false;
 }
 
 /**
